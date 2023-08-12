@@ -4,6 +4,8 @@ import * as ProductService from './services/product.js';
 import * as ImageService from './services/images.js';
 import * as UserService from './services/user.js';
 import * as AddressService from './services/address.js';
+import * as OrderService from './services/order.js';
+import * as OrderItemsService from './services/order_items.js';
 import fileUpload from 'express-fileupload';
 
 const app = express();
@@ -70,6 +72,18 @@ app.get("/api/v1/address/:id", UserService.authenticateToken, AddressService.get
 app.post("/api/v1/address", UserService.authenticateToken, AddressService.createAddress);
 app.put("/api/v1/address/:id", UserService.authenticateToken, AddressService.updateAddress);
 app.delete("/api/v1/address/:id", UserService.authenticateToken, AddressService.deleteAddress);
+
+app.post("/api/v1/orders", UserService.authenticateToken, OrderService.createOrder);
+app.get("/api/v1/orders/:order_id", UserService.authenticateToken, OrderService.getOrderById);
+app.put("/api/v1/orders/:order_id", UserService.authenticateToken, OrderService.updateOrderStatus);
+app.delete("/api/v1/orders/:order_id", UserService.authenticateToken, OrderService.deleteOrder);
+
+app.post("/api/v1/order-items", UserService.authenticateToken, OrderItemsService.addOrderItem);
+app.get("/api/v1/order-items/:order_id", UserService.authenticateToken, OrderItemsService.getOrderItemsByOrderId);
+app.put("/api/v1/order-items/:item_id", UserService.authenticateToken, OrderItemsService.updateOrderItem);
+app.delete("/api/v1/order-items/:item_id", UserService.authenticateToken, OrderItemsService.deleteOrderItem);
+app.get("/api/v1/order-items/item/:item_id", UserService.authenticateToken, OrderItemsService.getOrderItemById);
+app.get("/api/v1/order-items/product/:product_id/order/:order_id", UserService.authenticateToken, OrderItemsService.getOrderItemByProductAndOrder);
 
 
 
