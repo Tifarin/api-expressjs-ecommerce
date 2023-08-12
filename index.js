@@ -1,5 +1,6 @@
 import expess from 'express';
 import * as CategoryService from './services/category.js';
+import * as ProductService from './services/product.js';
 
 const app = expess();
 const port = 8080;
@@ -14,6 +15,11 @@ app.post("/api/v1/categories", CategoryService.createCategories);
 app.put("/api/v1/categories/:id", CategoryService.updateCategories);
 app.delete("/api/v1/categories/:id", CategoryService.deleteCategories);
 
+app.get("/api/v1/products", ProductService.getProducts);
+app.get("/api/v1/products/:id", ProductService.getProduct);
+app.post("/api/v1/products", ProductService.createProduct);
+app.put("/api/v1/products/:id", ProductService.updateProduct);
+app.delete("/api/v1/products/:id", ProductService.deleteProduct);
 
 app.use((err, request, response, next) => {
     const message = "internal server error";

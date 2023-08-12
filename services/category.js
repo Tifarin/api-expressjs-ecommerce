@@ -16,9 +16,9 @@ export const getCategoryById = async (req, res, next) => {
 
         const [result] = await categoryRepository.getDataById(id);
         if(result.length > 0) {
-            successResponse(res, "Ok", result[0])
+            successResponse(response, "Ok", result[0])
         } else {
-            errorResponse(res, "data tidak ditemukan", 404);
+            errorResponse(response, "data tidak ditemukan", 404);
         }
     } catch (error) {
         next(error)
