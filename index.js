@@ -3,6 +3,7 @@ import * as CategoryService from './services/category.js';
 import * as ProductService from './services/product.js';
 import * as ImageService from './services/images.js';
 import * as UserService from './services/user.js';
+import * as AddressService from './services/address.js';
 import fileUpload from 'express-fileupload';
 
 const app = express();
@@ -63,6 +64,14 @@ app.post("/api/v1/users", UserService.createUser);
 app.put("/api/v1/users/:id", UserService.updateUser);
 app.delete("/api/v1/users/:id", UserService.deleteUser);
 app.post("/api/v1/login", UserService.authUser);
+
+app.get("/api/v1/address", UserService.authenticateToken, AddressService.getAllAddress);
+app.get("/api/v1/address/:id", UserService.authenticateToken, AddressService.getAddressByIdUser);
+app.post("/api/v1/address", UserService.authenticateToken, AddressService.createAddress);
+app.put("/api/v1/address/:id", UserService.authenticateToken, AddressService.updateAddress);
+app.delete("/api/v1/address/:id", UserService.authenticateToken, AddressService.deleteAddress);
+
+
 
 app.use((err, request, response, next) => {
     const message = "internal server error";
