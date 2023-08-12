@@ -1,12 +1,41 @@
-import expess from 'express';
+import express from 'express';
 import * as CategoryService from './services/category.js';
 import * as ProductService from './services/product.js';
+import * as ImageService from './services/images.js';
+import fileUpload from 'express-fileupload';
 
-const app = expess();
+const app = express();
 const port = 8080;
 const host = "localhost"
 
-app.use(expess.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(fileUpload());
+
+app.post('/upload', (req, res) => {
+    try {
+        let product_id = req.body.product_id
+        console.log(product_id)
+        if (!req.files || !req.files.image) {
+            return res.status(400).send('No image uploaded.');
+        }
+        const image = req.files.image;
+        
+        const imageName = `${Date.now()}-${image.name}`;
+        const imagePath = `uploads/${imageName}`;
+
+        image.mv(imagePath, (err) => {
+            if (err) {
+                console.error('Error:', err);
+                return res.status(500).send('Error uploading image.');
+            }
+            res.status(200).send('Image uploaded successfully.');
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.get("/api/v1/categories", CategoryService.getAllCategories);
 app.get("/api/v1/categories/:id", CategoryService.getCategoryById);
@@ -20,6 +49,12 @@ app.get("/api/v1/products/:id", ProductService.getProduct);
 app.post("/api/v1/products", ProductService.createProduct);
 app.put("/api/v1/products/:id", ProductService.updateProduct);
 app.delete("/api/v1/products/:id", ProductService.deleteProduct);
+
+app.get("/api/v1/images", ImageService.getImages);
+app.get("/api/v1/images/:productId", ImageService.getImageByProductId);
+app.post("/api/v1/images", ImageService.createImage);
+app.put("/api/v1/images/:id", ImageService.updateImage);
+app.delete("/api/v1/images/:productId", ImageService.deleteImage);
 
 app.use((err, request, response, next) => {
     const message = "internal server error";
