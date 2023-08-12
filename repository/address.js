@@ -36,20 +36,9 @@ export const addData = (user_id, street_address, city, postal_code) => {
 }
 
 export const updateData = (id,  street_address, city, postal_code) => {
-    const sqlCheckUser = `
-        SELECT id
-        FROM users
-        WHERE id = ?
-    `;
-    const userCheckResult = dbPool.query(sqlCheckUser, [user_id]);
-
-    if (userCheckResult.length === 0) {
-        return "User ID not found in the database.";
-    }
-
     const sql = `
         UPDATE address
-        SET street_address = ?, city = ?, postal_code = ?,
+        SET street_address = ?, city = ?, postal_code = ?
         WHERE id = ?
     `;
     const result = dbPool.query(sql, [ street_address, city, postal_code, id]);

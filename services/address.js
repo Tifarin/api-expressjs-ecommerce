@@ -27,7 +27,7 @@ export const getAddressByIdUser = async (req, res, next) => {
 export const createAddress = async (req, res, next) => {
     try {
         const { user_id, street_address, city, postal_code } = req.body;
-        const [result] = await AddressRepository.createData(user_id, street_address, city, postal_code);
+        const [result] = await AddressRepository.addData(user_id, street_address, city, postal_code);
         successResponse(res, "Data berhasil ditambahkan", result.insertId);
     } catch (error) {
         next(error)
@@ -37,8 +37,8 @@ export const createAddress = async (req, res, next) => {
 export const updateAddress = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const { user_id, street_address, city, postal_code } = req.body;
-        const [result] = await AddressRepository.updateData(id, user_id, street_address, city, postal_code);
+        const {  street_address, city, postal_code } = req.body;
+        const [result] = await AddressRepository.updateData(id, street_address, city, postal_code);
         if(result.affectedRows > 0) {
             successResponse(res, "berhasil mengubah data", result.affectedRows)
         } else {
@@ -54,7 +54,7 @@ export const deleteAddress = async (req, res, next) => {
         const id = req.params.id;
         const [result] = await AddressRepository.deleteData(id);
         if(result.affectedRows > 0) {
-            successResponse(res, "berhasil mengubah data", result.affectedRows)
+            successResponse(res, "berhasil menghapus data", result.affectedRows)
         } else {
             errorResponse(res, "data tidak ditemukan", 404);
         }
