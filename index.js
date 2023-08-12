@@ -6,6 +6,7 @@ import * as UserService from './services/user.js';
 import * as AddressService from './services/address.js';
 import * as OrderService from './services/order.js';
 import * as OrderItemsService from './services/order_items.js';
+import * as CartService from './services/cart.js';
 import fileUpload from 'express-fileupload';
 
 const app = express();
@@ -85,7 +86,12 @@ app.delete("/api/v1/order-items/:item_id", UserService.authenticateToken, OrderI
 app.get("/api/v1/order-items/item/:item_id", UserService.authenticateToken, OrderItemsService.getOrderItemById);
 app.get("/api/v1/order-items/product/:product_id/order/:order_id", UserService.authenticateToken, OrderItemsService.getOrderItemByProductAndOrder);
 
-
+app.post("/api/v1/cart", UserService.authenticateToken, CartService.addToCart);
+app.get("/api/v1/cart/:user_id", UserService.authenticateToken, CartService.getCartItemsByUserId);
+app.put("/api/v1/cart/:cart_id", UserService.authenticateToken, CartService.updateCartItemQuantity);
+app.delete("/api/v1/cart/:cart_id", UserService.authenticateToken, CartService.removeFromCart);
+app.delete("/api/v1/cart/clear/:user_id", UserService.authenticateToken, CartService.clearCartByUserId);
+app.get("/api/v1/cart/item/:user_id/product/:product_id", UserService.authenticateToken, CartService.getCartItemByUserAndProduct);
 
 app.use((err, request, response, next) => {
     const message = "internal server error";
