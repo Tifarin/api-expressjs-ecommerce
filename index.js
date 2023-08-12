@@ -2,6 +2,7 @@ import express from 'express';
 import * as CategoryService from './services/category.js';
 import * as ProductService from './services/product.js';
 import * as ImageService from './services/images.js';
+import * as UserService from './services/user.js';
 import fileUpload from 'express-fileupload';
 
 const app = express();
@@ -46,15 +47,22 @@ app.delete("/api/v1/categories/:id", CategoryService.deleteCategories);
 
 app.get("/api/v1/products", ProductService.getProducts);
 app.get("/api/v1/products/:id", ProductService.getProduct);
-app.post("/api/v1/products", ProductService.createProduct);
-app.put("/api/v1/products/:id", ProductService.updateProduct);
-app.delete("/api/v1/products/:id", ProductService.deleteProduct);
+app.post("/api/v1/products",UserService.authenticateToken, ProductService.createProduct);
+app.put("/api/v1/products/:id" ,UserService.authenticateToken, ProductService.updateProduct);
+app.delete("/api/v1/products/:id" ,UserService.authenticateToken, ProductService.deleteProduct);
 
-app.get("/api/v1/images", ImageService.getImages);
+app.get("/api/v1/images",UserService.authenticateToken, ImageService.getImages);
 app.get("/api/v1/images/:productId", ImageService.getImageByProductId);
-app.post("/api/v1/images", ImageService.createImage);
-app.put("/api/v1/images/:id", ImageService.updateImage);
-app.delete("/api/v1/images/:productId", ImageService.deleteImage);
+app.post("/api/v1/images",UserService.authenticateToken, ImageService.createImage);
+app.put("/api/v1/images/:id" ,UserService.authenticateToken, ImageService.updateImage);
+app.delete("/api/v1/images/:productId" ,UserService.authenticateToken, ImageService.deleteImage);
+
+app.get("/api/v1/users", UserService.getAllUser);
+app.get("/api/v1/users/:id", UserService.getUserById);
+app.post("/api/v1/users", UserService.createUser);
+app.put("/api/v1/users/:id", UserService.updateUser);
+app.delete("/api/v1/users/:id", UserService.deleteUser);
+app.post("/api/v1/login", UserService.authUser);
 
 app.use((err, request, response, next) => {
     const message = "internal server error";
