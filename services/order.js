@@ -27,11 +27,11 @@ export const getOrderById = async (req, res, next) => {
 
 export const updateOrderStatus = async (req, res, next) => {
     try {
-        const order_id = req.params.order_id;
-        const { newStatus } = req.body;
-        const result = await OrderRepository.updateOrderStatus(order_id, newStatus);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Order status updated successfully", result);
+        let order_id = req.params.order_id;
+        let status = req.body.status;
+        const result = await OrderRepository.updateOrderStatus(order_id, status);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Order status updated successfully", result.affectedRows);
         } else {
             errorResponse(res, "Order not found", 404);
         }
@@ -44,8 +44,8 @@ export const deleteOrder = async (req, res, next) => {
     try {
         const order_id = req.params.order_id;
         const result = await OrderRepository.deleteOrder(order_id);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Order deleted successfully", result);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Order deleted successfully", result.affectedRows);
         } else {
             errorResponse(res, "Order not found", 404);
         }

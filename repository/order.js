@@ -20,13 +20,13 @@ export const getOrderById = async (order_id) => {
     return rows[0];
 };
 
-export const updateOrderStatus = async (order_id, newStatus) => {
+export const updateOrderStatus = async (order_id, status) => {
     const sql = `
         UPDATE orders
         SET status = ?
         WHERE id = ?
     `;
-    const result = await dbPool.query(sql, [newStatus, order_id]);
+    const result = await dbPool.query(sql, [status, order_id]);
     return result;
 };
 
