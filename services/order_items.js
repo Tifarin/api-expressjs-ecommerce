@@ -26,8 +26,8 @@ export const updateOrderItem = async (req, res, next) => {
         const item_id = req.params.item_id;
         const { quantity, price } = req.body;
         const result = await OrderItemsRepository.updateOrderItem(item_id, quantity, price);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Order item updated successfully", result);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Order item updated successfully", result.affectedRows);
         } else {
             errorResponse(res, "Order item not found", 404);
         }
@@ -40,8 +40,8 @@ export const deleteOrderItem = async (req, res, next) => {
     try {
         const item_id = req.params.item_id;
         const result = await OrderItemsRepository.deleteOrderItem(item_id);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Order item deleted successfully", result);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Order item deleted successfully", result.affectedRows);
         } else {
             errorResponse(res, "Order item not found", 404);
         }

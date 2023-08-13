@@ -100,8 +100,8 @@ export const authUser = async (request, response, next) => {
                         id: user.id,
                         email: user.email
                     };
-                    const accessToken = jwt.sign(claims, SECRET_AT, { expiresIn: '15m' });
-                    const refreshToken = jwt.sign(claims, SECRET_RT, { expiresIn: '30m' });
+                    const accessToken = jwt.sign(claims, SECRET_AT);
+                    const refreshToken = jwt.sign(claims, SECRET_RT);
                     let respData = {
                         user: user,
                         access_token: accessToken,
