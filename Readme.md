@@ -155,6 +155,7 @@ Tabel `order_items` menyimpan informasi tentang item-item dalam pesanan.
 
 - Pastikan untuk menjalankan `npm install` setelah mengunduh proyek untuk menginstal semua dependensi yang diperlukan.
 - Pastikan untuk mengatur konfigurasi basis data di dalam kode Anda sesuai dengan lingkungan pengembangan dan produksi.
+- Pastikan saat memasukkan access_token tidak menambahkan Bearer, hanya perlu masukkan jwt di header Authorization.
 
 Terima kasih telah mengikuti dokumentasi proyek Toko Online "Kelas.com". Jika Anda memiliki pertanyaan atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi kami.
 
