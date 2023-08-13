@@ -81,64 +81,66 @@ Tabel `product` menyimpan informasi mengenai produk yang dijual di toko online.
 2. Melakukan query basis data untuk menghapus produk dari tabel `products`.
 3. Mengirim respons sukses atau gagal ke klien.
 
-## Tabel dan Algoritma untuk Fitur Keranjang Belanja:
+# Tabel dan Algoritma untuk Fitur Keranjang Belanja
 
-### Tabel `cart`:
+## Tabel `cart`
 
 Tabel `cart` menyimpan informasi tentang keranjang belanja pengguna.
 
 - `id`: ID unik keranjang (int, primary key)
-- `user_id`: ID pengguna yang memiliki keranjang ini (int, foreign key)
+- `user_id`: ID pengguna yang memiliki keranjang ini (int, foreign key mengacu pada tabel `users`)
+- `product_id`: ID produk yang ada dalam keranjang ini (int, foreign key mengacu pada tabel `products`)
+- `quantity`: Jumlah produk dalam keranjang ini (int)
+- `created_at`: Waktu pembuatan keranjang (timestamp)
+- `updated_at`: Waktu pembaruan terakhir keranjang (timestamp)
 - ...
 
-### Tabel `cart_item`:
+Kolom `product_id` adalah foreign key yang menghubungkan keranjang dengan produk yang ada di dalamnya.
 
-Tabel `cart_item` menyimpan informasi tentang item-item yang ada di keranjang belanja pengguna.
-
-- `id`: ID unik item keranjang (int, primary key)
-- `cart_id`: ID keranjang yang memiliki item ini (int, foreign key)
-- `product_id`: ID produk yang ada dalam item ini (int, foreign key)
-- `quantity`: Jumlah produk dalam item ini (int)
-- ...
-
-### Algoritma Menambah Produk ke Keranjang:
+## Algoritma Menambah Produk ke Keranjang
 
 1. Memverifikasi bahwa pengguna sudah masuk atau memiliki sesi yang valid.
 2. Menerima ID produk dan jumlah dari permintaan klien.
 3. Memverifikasi ketersediaan produk dan stok yang cukup.
 4. Melakukan query basis data untuk menemukan keranjang pengguna.
-5. Jika keranjang pengguna sudah ada, menambahkan atau memperbarui jumlah produk dalam item keranjang.
-6. Jika keranjang belum ada, membuat keranjang baru dan menambahkan produk dalam item keranjang.
+5. Jika keranjang pengguna sudah ada, menambahkan atau memperbarui jumlah produk dalam keranjang.
+6. Jika keranjang belum ada, membuat keranjang baru dan menambahkan produk.
 
-### Algoritma Menghapus Produk dari Keranjang:
+## Algoritma Menghapus Produk dari Keranjang
 
 1. Memverifikasi bahwa pengguna sudah masuk atau memiliki sesi yang valid.
 2. Menerima ID produk dari permintaan klien.
-3. Melakukan query basis data untuk menghapus item produk dari keranjang pengguna.
+3. Melakukan query basis data untuk menghapus produk dari keranjang pengguna.
 4. Mengirim respons sukses atau gagal ke klien.
 
-## Tabel dan Algoritma untuk Fitur Checkout:
+# Tabel dan Algoritma untuk Fitur Checkout
 
-### Tabel `order`:
+## Tabel `orders`
 
-Tabel `order` menyimpan informasi tentang pesanan yang telah dibuat.
+Tabel `orders` menyimpan informasi tentang pesanan yang telah dibuat.
 
 - `id`: ID unik pesanan (int, primary key)
-- `user_id`: ID pengguna yang membuat pesanan (int, foreign key)
+- `user_id`: ID pengguna yang membuat pesanan (int, foreign key mengacu pada tabel `users`)
 - `order_date`: Tanggal pesanan (datetime)
+- `status`: Status pesanan (string)
+- `created_at`: Waktu pembuatan pesanan (timestamp)
+- `updated_at`: Waktu pembaruan terakhir pesanan (timestamp)
 - ...
 
-### Tabel `order_item`:
+## Tabel `order_items`
 
-Tabel `order_item` menyimpan informasi tentang item-item dalam pesanan.
+Tabel `order_items` menyimpan informasi tentang item-item dalam pesanan.
 
 - `id`: ID unik item pesanan (int, primary key)
-- `order_id`: ID pesanan yang memiliki item ini (int, foreign key)
-- `product_id`: ID produk dalam item ini (int, foreign key)
+- `order_id`: ID pesanan yang memiliki item ini (int, foreign key mengacu pada tabel `orders`)
+- `product_id`: ID produk dalam item ini (int, foreign key mengacu pada tabel `products`)
 - `quantity`: Jumlah produk dalam item ini (int)
+- `price`: Harga per unit produk dalam item ini (decimal)
+- `created_at`: Waktu pembuatan item pesanan (timestamp)
+- `updated_at`: Waktu pembaruan terakhir item pesanan (timestamp)
 - ...
 
-### Algoritma Proses Checkout:
+## Algoritma Proses Checkout
 
 1. Memverifikasi bahwa pengguna sudah masuk atau memiliki sesi yang valid.
 2. Menerima data pengiriman dan metode pembayaran dari permintaan klien.
@@ -146,10 +148,8 @@ Tabel `order_item` menyimpan informasi tentang item-item dalam pesanan.
 4. Melakukan query basis data untuk membuat entri pesanan baru dalam tabel `orders`.
 5. Melakukan query basis data untuk membuat entri item pesanan dalam tabel `order_items`.
 6. Mengurangi stok produk yang diorder dari tabel `products`.
-7. Mengirim respons sukses atau gagal, serta nomor pesanan ke klien.
-
-...
-
+7. Membuat entri transaksi pembayaran dalam tabel `transactions`.
+8. Mengirim respons sukses atau gagal, serta nomor pesanan ke klien.
 
 ## Catatan Penting:
 

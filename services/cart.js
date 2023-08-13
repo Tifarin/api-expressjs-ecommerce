@@ -26,8 +26,8 @@ export const updateCartItemQuantity = async (req, res, next) => {
         const cart_id = req.params.cart_id;
         const { newQuantity } = req.body;
         const result = await CartRepository.updateCartItemQuantity(cart_id, newQuantity);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Cart item quantity updated successfully", result);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Cart item quantity updated successfully", result.affectedRows);
         } else {
             errorResponse(res, "Cart item not found", 404);
         }
@@ -40,8 +40,8 @@ export const removeFromCart = async (req, res, next) => {
     try {
         const cart_id = req.params.cart_id;
         const result = await CartRepository.removeFromCart(cart_id);
-        if (result.affectedRows > 0) {
-            successResponse(res, "Item removed from cart successfully", result);
+        if (result[0].affectedRows > 0) {
+            successResponse(res, "Item removed from cart successfully", result.affectedRows);
         } else {
             errorResponse(res, "Cart item not found", 404);
         }
@@ -54,7 +54,7 @@ export const clearCartByUserId = async (req, res, next) => {
     try {
         const user_id = req.params.user_id;
         const result = await CartRepository.clearCartByUserId(user_id);
-        successResponse(res, "Cart cleared successfully", result);
+        successResponse(res, "Cart cleared successfully", result.affectedRows);
     } catch (error) {
         next(error);
     }

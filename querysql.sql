@@ -94,3 +94,8 @@ CREATE TABLE IF NOT EXISTS transactions (
 ALTER TABLE products MODIFY price BIGINT NOT NULL;
 ALTER TABLE order_items MODIFY price BIGINT NOT NULL;
 ALTER TABLE transactions MODIFY amount BIGINT NOT NULL;
+
+ALTER TABLE cart
+ADD product_id INT,
+ADD quantity INT,
+ADD FOREIGN KEY (product_id) REFERENCES products(id);
